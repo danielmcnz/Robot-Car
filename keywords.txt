@@ -1,0 +1,20 @@
+RoboCar KEYWORD1
+
+IRSetup KEYWORD2
+IRRun KEYWORD2
+
+BluetoothRun KEYWORD2
+
+WheelsSetup KEYWORD2
+WheelsRun KEYWORD2
+MoveLeft KEYWORD2
+MoveRight KEYWORD2
+MoveForward KEYWORD2
+MoveBackward KEYWORD2
+Stop KEYWORD2
+
+results LITERAL1
+recv LITERAL1
+ircon LITERAL1
+key_value LITERAL1
+direction LITERAL1
