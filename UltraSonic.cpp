@@ -23,6 +23,10 @@ void UltraSonic::enable()
     us_servo->setPos(200);
 }
 
+long microsecondsToCentimeters(long microseconds) {
+   return microseconds / 29 / 2;
+}
+
 bool UltraSonic::scan(int maxDistance)
 {
     digitalWrite(trigPin, LOW);
@@ -34,11 +38,11 @@ bool UltraSonic::scan(int maxDistance)
 
     duration = pulseIn(echoPin, HIGH);
 
-    Serial.println(duration);
-    distance = (duration * 0.034) / 2;
-    Serial.println(distance);
+    distance = microsecondsToCentimeters(duration);
+
     delay(15);
-    if(distance > maxDistance && maxDistance < 3000)
+
+    if(distance < maxDistance && maxDistance < 3000)
     {
         return true;
     }

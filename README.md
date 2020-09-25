@@ -3,11 +3,11 @@
 Software for my robot car.
 
 ## Features
-- Basic Line tracking
+- Line tracking
 - Remote control using the IR Sensor
+- Object collision detection
 
 ## Issues
-- Line tracking fails when corners are too sharp and car freezes
 - Cannot switch between modes without re-uploading code
 
 ## Future Implementations

@@ -3,6 +3,9 @@
 using namespace Car;
 
 RoboCar::RoboCar()
+    :
+    foundObject(false),
+    pickedUpObject(false)
 {}
 
 RoboCar::~RoboCar()
@@ -22,12 +25,14 @@ void RoboCar::setLT()
 {
     motor->setSpeed(125);
     lt->enable();
+    u_sonic->enable();
 }
 
 void RoboCar::setIRRem()
 {
     motor->setSpeed(255);
     ircon->enable();
+    u_sonic->enable();
 }
 
 void RoboCar::enable()
@@ -36,8 +41,6 @@ void RoboCar::enable()
     motor = new Motors();
     lt = new LineTracker();
     u_sonic = new UltraSonic();
-
-    u_sonic->enable();
 }
 
 void RoboCar::IRRemoteControl()
@@ -83,8 +86,8 @@ void RoboCar::IRRemoteControl()
 
 void RoboCar::LineTracking()
 {
-    // if(!u_sonic->scan(200))
-    // {
+    if(!u_sonic->scan(10) && foundObject == false)
+    {
         switch(lt->run())
         {
             case action::up:
@@ -99,14 +102,22 @@ void RoboCar::LineTracking()
             default:
                 break;
         }
-        Serial.println("nope");
-    // }
-    // else
-    // {
-    //     Serial.println("collision");
-    //     motor->Stop();
-    // }
-    
+    }
+    else
+    {
+        foundObject = true;
+
+        // TODO: pick up object
+
+        if(pickedUpObject)
+        {
+            for(int i=0;i<10;++i)
+            {
+                motor->MoveLeft();
+                foundObject = false;
+            }
+        }
+    }
 }
 
 void RoboCar::Automate()

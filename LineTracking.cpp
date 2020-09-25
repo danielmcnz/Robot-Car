@@ -21,7 +21,7 @@ action LineTracker::run()
     {
         return action::up;
     } 
-    else if (LT_R)
+    else if (!digitalRead(LT_R))
     {
         return action::right;
     } 
@@ -29,4 +29,5 @@ action LineTracker::run()
     {
         return action::left;
     }
+    return action::none;
 }

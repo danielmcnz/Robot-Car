@@ -33,6 +33,8 @@ namespace Car
         LineTracker *lt;
         UltraSonic *u_sonic;
         unsigned long last_update;
+        bool foundObject;
+        bool pickedUpObject;
     };
 }
 
