@@ -1,26 +1,26 @@
-#include "USServo.h"
+#include "ServoCtrl.h"
 
 using namespace Car;
 
-USServo::USServo()
+ServoCtrl::ServoCtrl()
     :
     m_pos(90)
 {}
 
-USServo::~USServo()
+ServoCtrl::~ServoCtrl()
 {}
 
-void USServo::setup()
+void ServoCtrl::enable(int PIN)
 {
     m_sServo.attach(PIN);
 }
 
-void USServo::setPos(int pos)
+void ServoCtrl::setPos(int pos)
 {
     m_sServo.write(pos);
 }
 
-void USServo::moveTo(int startPos, int endPos)
+void ServoCtrl::moveTo(int startPos, int endPos)
 {
     // Check if startPos and endPos and which one
     // is greater determines if the for loop is

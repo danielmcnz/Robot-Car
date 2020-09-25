@@ -4,7 +4,9 @@
 #define echoPin A4
 #define trigPin A5
 
-#include "USServo.h"
+#include "ServoCtrl.h"
+
+#define ULTRA_SONIC_SERVO_PIN 3
 
 namespace Car
 {
@@ -19,7 +21,7 @@ namespace Car
     private:
         long distance;
         long duration;
-        USServo *us_servo;
+        ServoCtrl *us_servo;
     };
 }
 

@@ -4,17 +4,15 @@
 #include "Arduino.h"
 #include "Servo.h"
 
-#define PIN 3
-
 namespace Car
 {
-    class USServo
+    class ServoCtrl
     {
     public:
-        USServo();
-        ~USServo();
+        ServoCtrl();
+        ~ServoCtrl();
 
-        void setup();
+        void enable(int PIN);
         void setPos(int pos);
         void moveTo(int startPos, int endPos);
     private:

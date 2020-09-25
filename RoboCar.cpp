@@ -4,7 +4,7 @@ using namespace Car;
 
 RoboCar::RoboCar()
     :
-    foundObject(false),
+    collision(false),
     pickedUpObject(false)
 {}
 
@@ -23,14 +23,17 @@ RoboCar::~RoboCar()
 
 void RoboCar::setLT()
 {
-    motor->setSpeed(125);
+    motor->setSpeed(255);
     lt->enable();
     u_sonic->enable();
+    stepper_motor->enable();
+    pully->enable(PULLY_PIN);
+    pully->setPos(PULLY_UP);
 }
 
 void RoboCar::setIRRem()
 {
-    motor->setSpeed(255);
+    motor->setSpeed(200);
     ircon->enable();
     u_sonic->enable();
 }
@@ -41,6 +44,8 @@ void RoboCar::enable()
     motor = new Motors();
     lt = new LineTracker();
     u_sonic = new UltraSonic();
+    stepper_motor = new StepperMotor();
+    pully = new ServoCtrl();
 }
 
 void RoboCar::IRRemoteControl()
@@ -86,7 +91,7 @@ void RoboCar::IRRemoteControl()
 
 void RoboCar::LineTracking()
 {
-    if(!u_sonic->scan(10) && foundObject == false)
+    if(!u_sonic->scan(20) && collision == false)
     {
         switch(lt->run())
         {
@@ -105,43 +110,39 @@ void RoboCar::LineTracking()
     }
     else
     {
-        foundObject = true;
-
-        // TODO: pick up object
-
-        if(pickedUpObject)
+        motor->Stop();
+        collision = true;
+        
+        if(pickedUpObject == false)
         {
-            for(int i=0;i<10;++i)
-            {
-                motor->MoveLeft();
-                foundObject = false;
-            }
+            pickedUpObject = PickupObject();
+        }
+
+        if(pickedUpObject == true)
+        {
+            TurnAround();
+            
+            collision = false;
         }
     }
 }
 
-void RoboCar::Automate()
+bool RoboCar::PickupObject()
 {
-    /*
-        Car logic here
-        Example below
-    */
+    // TODO: pickup object
 
-    unsigned long time = millis() / 1000;
-    if(time < 1)
+    stepper_motor->step(1000);
+    //pully->moveTo(PULLY_UP, PULLY_DOWN);
+    return true;
+}
+
+void RoboCar::TurnAround()
+{
+    unsigned long time = millis();
+
+    do
     {
-        motor->MoveForward();
-    }
-    else if(time > 1 && time < 2)
-    {
-        motor->MoveLeft();
-    }
-    else if(time > 2 && time < 3)
-    {
-        motor->MoveForward();
-    }
-    else
-    {
-        motor->Stop();
-    }
+        motor->MoveRight();
+    } while (time < 500);
+    collision = false;
 }

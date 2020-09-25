@@ -4,7 +4,7 @@ using namespace Car;
 
 UltraSonic::UltraSonic()
 {
-    us_servo = new USServo();
+    us_servo = new ServoCtrl();
 }
 
 UltraSonic::~UltraSonic()
@@ -19,7 +19,7 @@ void UltraSonic::enable()
     pinMode(echoPin, INPUT);
     pinMode(trigPin, OUTPUT);
 
-    us_servo->setup();
+    us_servo->enable(ULTRA_SONIC_SERVO_PIN);
     us_servo->setPos(200);
 }
 
