@@ -13,4 +13,3 @@ Software for my robot car.
 ## Future Implementations
 - Bluetooth
 - Robot arm control
-- Object detection/collision
