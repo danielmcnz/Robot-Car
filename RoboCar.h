@@ -14,8 +14,8 @@
 #include "ServoCtrl.h"
 
 #define PULLY_PIN 12
-#define PULLY_UP 0// position to start at
-#define PULLY_DOWN 180// position to end at
+#define PULLY_UP 0 // position to start at
+#define PULLY_DOWN 180 // position to end at
 
 namespace Car
 {

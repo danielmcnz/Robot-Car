@@ -11,6 +11,5 @@ void setup()
 
 void loop()
 {
-  //car.IRRemoteControl();
   car.LineTracking();
 }

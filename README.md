@@ -1,4 +1,4 @@
-# Robot Car Code Repository
+# Robot Car
 
 Software for my robot car.
 
