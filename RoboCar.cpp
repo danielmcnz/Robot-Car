@@ -21,23 +21,6 @@ RoboCar::~RoboCar()
     u_sonic = nullptr;
 }
 
-void RoboCar::setLT()
-{
-    motor->setSpeed(255);
-    lt->enable();
-    u_sonic->enable();
-    stepper_motor->enable();
-    pully->enable(PULLY_PIN);
-    pully->setPos(PULLY_UP);
-}
-
-void RoboCar::setIRRem()
-{
-    motor->setSpeed(200);
-    ircon->enable();
-    u_sonic->enable();
-}
-
 void RoboCar::enable()
 {
     ircon = new IRControl();
@@ -46,6 +29,14 @@ void RoboCar::enable()
     u_sonic = new UltraSonic();
     stepper_motor = new StepperMotor();
     pully = new ServoCtrl();
+
+    motor->setSpeed(230);
+    lt->enable();
+    u_sonic->enable();
+    stepper_motor->enable();
+    pully->enable(PULLY_PIN);
+    pully->setPos(PULLY_UP);
+    ircon->enable();
 }
 
 void RoboCar::IRRemoteControl()
@@ -78,8 +69,6 @@ void RoboCar::IRRemoteControl()
             break;
         case action::err:
             break;
-        default:
-            break;
     }
 
     if ((millis() - last_update) >= 100)
@@ -91,7 +80,7 @@ void RoboCar::IRRemoteControl()
 
 void RoboCar::LineTracking()
 {
-    if(!u_sonic->scan(20) && collision == false)
+    if(!u_sonic->scan_distance(20) && collision == false)
     {
         switch(lt->run())
         {
@@ -103,8 +92,6 @@ void RoboCar::LineTracking()
                 break;
             case action::right:
                 motor->MoveRight();
-                break;
-            default:
                 break;
         }
     }
@@ -131,7 +118,7 @@ bool RoboCar::PickupObject()
 {
     // TODO: pickup object
 
-    stepper_motor->step(1000);
+    stepper_motor->step(200);
     //pully->moveTo(PULLY_UP, PULLY_DOWN);
     return true;
 }
@@ -145,4 +132,71 @@ void RoboCar::TurnAround()
         motor->MoveRight();
     } while (time < 500);
     collision = false;
+}
+
+void RoboCar::CollisionDetection()
+{
+    while(true)
+    {
+        unsigned long distance = u_sonic->scan();
+        if(distance < 20)
+        {
+            motor->Stop();
+            action posToMoveTo;
+            posToMoveTo = u_sonic->specialscan();
+
+            unsigned long starttime = millis();
+            unsigned long endtime = starttime;
+            int moveDuration = 300;
+            switch(posToMoveTo)
+            {
+            case action::down:
+                while ((endtime - starttime) <= 
+                    (moveDuration * 2 + moveDuration / 2))
+                {
+                    motor->MoveLeft();
+                    endtime = millis();
+                }
+                break;
+            case action::up:
+                while ((endtime - starttime) <= moveDuration)
+                {
+                    motor->MoveForward();
+                    endtime = millis();
+                }
+                break;
+            case action::left:
+                while ((endtime - starttime) <= moveDuration)
+                {
+                    motor->MoveLeft();
+                    endtime = millis();
+                }
+                break;
+            case action::kindaleft:
+                while ((endtime - starttime) <= moveDuration)
+                {
+                    motor->MoveLeft();
+                    endtime = millis();
+                }
+            case action::right:
+                while ((endtime - starttime) <= moveDuration)
+                {
+                    motor->MoveRight();
+                    endtime = millis();
+                }
+                break;
+            case action::kindaright:
+                while ((endtime - starttime) <= moveDuration)
+                {
+                    motor->MoveRight();
+                    endtime = millis();
+                }
+            }
+        }
+        else
+        {
+            motor->MoveForward();
+        }
+              
+    }
 }

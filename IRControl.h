@@ -26,12 +26,16 @@ namespace Car
 {
     const int IR_PIN = 12;
 
+    // My brain hurts ok, 
+    // dont judge the kinda left & right
     enum action
     {
         up,
         down,
         left,
+        kindaleft,
         right,
+        kindaright,
         none,
         err,
         one,

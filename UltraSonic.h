@@ -4,7 +4,8 @@
 #define echoPin A4
 #define trigPin A5
 
-#include "ServoCtrl.h"
+#include "IRControl.h"
+#include "Servo.h"
 
 #define ULTRA_SONIC_SERVO_PIN 3
 
@@ -17,11 +18,13 @@ namespace Car
         ~UltraSonic();
 
         void enable();
-        bool scan(int maxDistance);
+        unsigned long scan();
+        bool scan_distance(int maxDist);
+        action specialscan();
     private:
-        long distance;
-        long duration;
-        ServoCtrl *us_servo;
+        unsigned long distance;
+        unsigned long duration;
+        Servo servo;
     };
 }
 

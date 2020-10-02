@@ -25,12 +25,11 @@ namespace Car
         RoboCar();
         ~RoboCar();
 
-        void setLT();
-        void setIRRem();
-
         void enable();
+
         void IRRemoteControl();
         void LineTracking();
+        void CollisionDetection();
 
 private:
         bool PickupObject();
